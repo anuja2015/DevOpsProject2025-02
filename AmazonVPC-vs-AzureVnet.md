@@ -17,3 +17,11 @@
 | VPC Peering | VNet Peering |
 | Route Tables | Route Tables in VNet/Subnet |
 | VPN Gateway | Azure VPN Gateway |
+
+| Feature | AWS (Security Group) | Azure (NSG) |
+|---------| ---------------------| ------------|
+| Default assignment | ✅ Default SG assigned to all supported resources | ❌ No NSG assigned by default (except via Portal VM wizard) |
+| Automatically created | ✅ Yes, per VPC | ⚠️ Only by Azure Portal VM flow |
+| Scope of rules | Instance-level | Subnet-level and/or NIC-level |
+| Stateful vs Stateless | Stateful | Also stateful |
+
