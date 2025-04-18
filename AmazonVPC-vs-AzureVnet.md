@@ -7,3 +7,13 @@
 | Internet Gateway | Yes | Internet Gateway (via default route) |
 | NAT Gateway | Yes | Azure NAT Gateway / NAT rules |
 |VPN / Peering | Yes | Yes (VNet Peering, VPN Gateway) |
+
+
+| AWS Component | Azure Equivalent |
+|---------------| -----------------|
+| Internet Gateway | Default route to Internet |
+| NAT Gateway | Azure NAT Gateway |
+| Network ACLs | Network Security Groups (NSG) |
+| VPC Peering | VNet Peering |
+| Route Tables | Route Tables in VNet/Subnet |
+| VPN Gateway | Azure VPN Gateway |
