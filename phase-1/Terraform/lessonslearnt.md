@@ -88,10 +88,11 @@ __How__
 - variable.tf will have variable description and types.
 - output.tf will have output ids
 - Inside the root module there will be main.tf which has terraform provider for azure. Therewe will call this module as following
-        module network-module {
-          source = ./network-module
-          name = var.vnet_name
-          .
-          .
-      }
+
+              module network-module {
+              source = ./network-module
+               name = var.vnet_name
+                      .
+                      .
+                  }
 
