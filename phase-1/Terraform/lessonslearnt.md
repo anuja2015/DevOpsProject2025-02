@@ -96,3 +96,48 @@ __How__
                       .
                   }
 
+8. state blob is already locked
+
+Error: Error acquiring the state lock
+│
+│ Error message: state blob is already locked
+│ Lock Info:
+
+__How__ 
+
+            az storage blob lease break --account-name storage-account-name --blob-name blob-name --container-name container-name
+
+9. Create multiple VM's using VM module.
+
+locals {
+vm_configs = {
+vm1 = {
+            virtual_machine_name = "master-node"
+            nic_id  = azurerm_network_interface.nics[0].id
+            vm_size = "Standard_D4s_v3"
+            storage_account_type = "Premium_LRS"
+       }
+vm2 = {
+            virtual_machine_name = "worker-node"
+            nic_id  = azurerm_network_interface.nics[1].id
+            vm_size = "Standard_D4s_v3"
+            storage_account_type = "Premium_LRS"
+      }
+
+module virtualmachine-module {
+     source = ./virtualmachine-module
+     for_each = locals.vm_configs
+     
+     size = each.value.vm_size
+     name = each.value.virtual_machine_name
+     resource_group_name = data.azurerm_resource_group.devopsproject02-RG.name
+     location            = data.azurerm_resource_group.devopsproject02-RG.location
+     nic_id              = each.value.nic_id
+     admin_username      = "azureuser"
+     storage_account_type = each.value.storage_account_type
+     output "vm_private_keys" {
+  value = {
+    for vm_key, vm in module.virtualmachine-module : vm_key => vm.tls_private_key_pem
+  }
+  sensitive = true
+  }
