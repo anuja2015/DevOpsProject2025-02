@@ -52,3 +52,12 @@
 
 ![image](https://github.com/user-attachments/assets/c815db66-0acc-46a7-b40b-6be3f62267ac)
 
+
+### Jenkins Installation
+
+#### I am running my custom jenkins image.
+
+        docker run -p 8080:8080 -p 50000:50000 -d --name myjenkins -u root -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock armdevu/custom-jenkins:1.0
+
+#### Access at <vm-public-ip-address>:8080
+
