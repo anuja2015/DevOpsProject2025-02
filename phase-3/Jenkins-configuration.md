@@ -11,7 +11,7 @@
 7. Kubernetes CLI
 8. Docker Pipeline Step
 9. Kubernetes
-10. GitHube Integration
+10. GitHub Integration
 
 #### Configure Installed plugins/tools
 
@@ -20,3 +20,9 @@ Manage Jenkins - > Tools -> Add all tools
 #### Credentials
 
 Add credentials
+
+#### Add Sonar server
+
+Manage Jenkins --> System --> SonarQube installations
+
+![image](https://github.com/user-attachments/assets/1e27fe66-10fd-4bb0-86a5-e21a144cd744)
