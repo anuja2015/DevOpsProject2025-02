@@ -16,3 +16,7 @@
 #### Configure Installed plugins/tools
 
 Manage Jenkins - > Tools -> Add all tools
+
+#### Credentials
+
+Add credentials
