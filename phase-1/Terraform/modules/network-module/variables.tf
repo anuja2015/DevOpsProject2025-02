@@ -32,22 +32,20 @@ variable "subnet_address_prefix" {
   type = list(string)
 }
 
-variable "network_security_group_name"{
-    description = "The name for nsg"
-    type = string
+variable "network_security_group_names" {
+  description = "Map of NSG names to their inline rules"
+  type = map(object({
+    rules = map(object({
+      priority                   = number
+      direction                  = string
+      access                     = string
+      protocol                   = string
+      source_port_range          = string
+      destination_port_range     = string
+      source_address_prefix      = string
+      destination_address_prefix = string
+    }))
+  }))
+  
 }
 
-variable "nsg_security_rules" {
-  description = "Map of security rules to attach to the NSG"
-  type = map(object({
-    priority                   = number
-    direction                  = string
-    access                     = string
-    protocol                   = string
-    source_port_range          = string
-    destination_port_range     = string
-    source_address_prefix      = string
-    destination_address_prefix = string
-  }))
-  default = {}
-}

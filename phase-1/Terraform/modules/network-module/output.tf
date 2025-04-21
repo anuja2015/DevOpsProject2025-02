@@ -3,7 +3,10 @@ output "subnet_id" {
   value       = azurerm_subnet.project02-subnet01.id
 }
 
-output "nsg_id" {
-  description = "The ID of the network security group"
-  value       = azurerm_network_security_group.project02-nsg.id
+
+output "network_security_group_ids" {
+  value = {
+    for name, nsg in azurerm_network_security_group.nsg : name => nsg.id
+  }
 }
+

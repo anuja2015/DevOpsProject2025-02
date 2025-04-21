@@ -16,31 +16,25 @@ resource "azurerm_subnet" "project02-subnet01" {
   
 }
 
-resource "azurerm_network_security_group" "project02-nsg" {
-    name = var.network_security_group_name
-    location = var.location
-    resource_group_name = var.resource_group_name
-    depends_on = [ azurerm_subnet.project02-subnet01 ]
-}
 
-resource "azurerm_network_security_rule" "security_rules" {
-  for_each = var.nsg_security_rules
+resource "azurerm_network_security_group" "nsg" {
+  for_each            = var.network_security_group_names
+  name                = each.key
+  location            = var.location
+  resource_group_name = var.resource_group_name
 
-  name                        = each.key
-  priority                    = each.value.priority
-  direction                   = each.value.direction
-  access                      = each.value.access
-  protocol                    = each.value.protocol
-  source_port_range           = each.value.source_port_range
-  destination_port_range      = each.value.destination_port_range
-  source_address_prefix       = each.value.source_address_prefix
-  destination_address_prefix  = each.value.destination_address_prefix
-  resource_group_name         = var.resource_group_name
-  network_security_group_name = azurerm_network_security_group.project02-nsg.name
-}
-
-
-resource "azurerm_subnet_network_security_group_association" "nsg-to-subnet" {
-  subnet_id                 = azurerm_subnet.project02-subnet01.id
-  network_security_group_id = azurerm_network_security_group.project02-nsg.id
+  dynamic "security_rule" {
+    for_each = each.value.rules
+    content {
+      name                       = security_rule.key
+      priority                   = security_rule.value.priority
+      direction                  = security_rule.value.direction
+      access                     = security_rule.value.access
+      protocol                   = security_rule.value.protocol
+      source_port_range          = security_rule.value.source_port_range
+      destination_port_range     = security_rule.value.destination_port_range
+      source_address_prefix      = security_rule.value.source_address_prefix
+      destination_address_prefix = security_rule.value.destination_address_prefix
+    }
+  }
 }
