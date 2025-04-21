@@ -35,3 +35,20 @@
         sudo usermod -aG docker $USER
 
 #### Log out and log back in so that your group membership is re-evaluated.
+
+### SonarQube installation
+
+    docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+
+#### Access at <vm-public-ip-address>:9000   Initial Username - admin Password - admin.
+
+#### Pass word to be changed after login.
+
+### Nexus installation
+
+     docker run -d --name nexus -p 8081:8081 sonatype/nexus:latest
+
+#### Access at <vm-public-ip-address>:8081  Initial Username - admin Password - /nexus-data/admin.password (inside the container).
+
+![image](https://github.com/user-attachments/assets/c815db66-0acc-46a7-b40b-6be3f62267ac)
+
