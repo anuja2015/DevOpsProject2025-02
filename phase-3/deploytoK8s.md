@@ -84,6 +84,28 @@
 
 ### Create deployment.yaml
      deploy-svc.yaml
+     
 ### Deploy an ingress controller
 
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/baremetal/deploy.yaml
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.9.4/deploy/static/provider/cloud/deploy.yaml
+
+### Create a ingress resource
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: boardgame-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: boardgame-service
+                port:
+                  number: 80
+
