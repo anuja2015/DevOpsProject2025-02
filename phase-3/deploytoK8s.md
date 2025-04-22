@@ -105,7 +105,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: boardgame-service
+                name: boardgame-svc
                 port:
                   number: 80
 
