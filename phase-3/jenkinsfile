@@ -1,0 +1,84 @@
+pipeline {
+    agent any
+    tools {
+        jdk 'jdk17'
+        maven 'maven3'
+    }
+    environment {
+        SCANNER_HOME=tool 'sonar'
+
+    }
+
+    stages {
+        stage('Git-Checkout') {
+            steps {
+                git credentialsId: 'github-credentials', url: 'https://github.com/anuja2015/BoardGame.git'
+            }
+        }
+        stage('Maven-Build') {
+            steps {
+                sh 'mvn compile test'
+            }
+        }
+        stage('Filesystem-scan') {
+            steps {
+                sh 'trivy fs --format table -o trivy-fs-report.html .'
+            }
+        }
+        stage('SonarScan') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=BoardGameApplication \
+                    -Dsonar.projectName=BoardGameApplication -Dsonar.java.binaries=. '''
+                }
+            }
+        }
+        stage('QualityGate') {
+            steps {
+                waitForQualityGate abortPipeline: false, credentialsId: 'sonar-credentials'
+                }
+        }
+        stage('Build-Application') {
+            steps {
+                sh 'mvn package'
+                }
+        }
+        stage('PublishArtifactsToNexus') {
+            steps {
+                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn deploy'   
+                }
+            }
+        }
+        stage('BuildDockerImage') {
+            steps {
+                script{
+                    withDockerRegistry(credentialsId: 'docker-credentials') {
+                       sh 'docker build -t armdevu/boardgame:2.0 .'   
+                    }
+                 }
+              }
+        }
+        stage('ImageScan') {
+            steps {
+                  sh 'trivy image --format table -o trivy-fs-report.html armdevu/boardgame:1.0'
+                }
+        }
+        stage('Push-Docker-Image') {
+            steps {
+                  script {
+                        withDockerRegistry(credentialsId: 'docker-credentials') {
+                            sh 'docker push armdevu/boardgame:2.0 '
+                    }
+                }
+             }
+        }
+        stage ('Deploy-to-K8s') {
+            steps {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'jenkins-api-token', namespace: 'webapps', serverUrl: 'https://172.0.1.6:6443' ]]) {
+                    sh 'kubectl apply -f deploy-svc.yaml'
+                }
+            }
+        }
+    }
+}
