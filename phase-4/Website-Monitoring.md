@@ -15,7 +15,7 @@
       sudo dpkg -i grafana-enterprise_11.6.0_amd64.deb
       sudo /bin/systemctl start grafana-server
 
-  #### Access at <ip-address>:3000    initial username: admin password: admin
+  #### Access at ip-address:3000    initial username: admin password: admin
 
   ### Install Blackbox exporter
 
@@ -25,7 +25,8 @@
         tar -xvf blackbox_exporter-0.26.0.linux-amd64.tar.gz
         cd blackbox_exporter-0.26.0.linux-amd64
         ./blackbox_exporter &
- #### Access at <ip-address>:9115
+        
+ #### Access at ip-address:9115
 
  ### Update prometheus.yml with scrape configs
 
