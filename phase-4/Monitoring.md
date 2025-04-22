@@ -15,4 +15,4 @@
       sudo dpkg -i grafana-enterprise_11.6.0_amd64.deb
       sudo /bin/systemctl start grafana-server
 
-  #### Access at <ip-address>:3000
+  #### Access at <ip-address>:3000    initial username: admin password: admin
