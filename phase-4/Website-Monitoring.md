@@ -6,7 +6,7 @@
       cd prometheus-2.53.4.linux-amd64
       ./prometheus &
 
-#### Access at <ip-address>:9090
+#### Access at ip-address:9090
 
 ### Install Grafana
 
